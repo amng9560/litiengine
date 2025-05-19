@@ -21,6 +21,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.zip.DeflaterOutputStream;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
@@ -641,7 +642,7 @@ public class TileData {
     }
 
     return Arrays.stream(tileArr)
-      .flatMap(Collection::stream)
+      .flatMap(Stream::of)
       .collect(Collectors.toList());
   }
 
