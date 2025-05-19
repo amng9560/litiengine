@@ -1,7 +1,6 @@
 package de.gurkenlabs.utiliti.swing;
 
 import de.gurkenlabs.litiengine.Game;
-import de.gurkenlabs.litiengine.util.ArrayUtilities;
 import de.gurkenlabs.utiliti.swing.panels.PropertyPanel;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -13,8 +12,10 @@ import java.awt.event.ContainerListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -138,7 +139,9 @@ public class TagPanel extends JPanel {
   }
 
   public String getTagsString() {
-    return ArrayUtilities.join(this.getTags());
+    return Arrays.stream(this.getTags().toArray())
+      .map(Object::toString)
+      .collect(Collectors.joining(","));
   }
 
   public void clear() {

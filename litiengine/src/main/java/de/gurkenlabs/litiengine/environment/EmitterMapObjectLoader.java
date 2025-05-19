@@ -14,10 +14,11 @@ import de.gurkenlabs.litiengine.graphics.emitters.particles.ParticleType;
 import de.gurkenlabs.litiengine.graphics.emitters.xml.EmitterData;
 import de.gurkenlabs.litiengine.graphics.emitters.xml.ParticleParameter;
 import de.gurkenlabs.litiengine.physics.Collision;
-import de.gurkenlabs.litiengine.util.ArrayUtilities;
 import de.gurkenlabs.litiengine.util.ColorHelper;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 public class EmitterMapObjectLoader extends MapObjectLoader {
 
@@ -120,7 +121,9 @@ public class EmitterMapObjectLoader extends MapObjectLoader {
     mo.setValue(MapObjectProperty.Emitter.ORIGIN_ALIGN, emitterData.getOriginAlign());
     mo.setValue(MapObjectProperty.Emitter.ORIGIN_VALIGN, emitterData.getOriginValign());
 
-    String commaSeperatedColors = ArrayUtilities.join(emitterData.getColors());
+    String commaSeperatedColors = Arrays.stream(emitterData.getColors().toArray())
+      .map(Object::toString)
+      .collect(Collectors.joining(","));
     mo.setValue(MapObjectProperty.Emitter.COLORS, commaSeperatedColors);
 
     mo.setValue(MapObjectProperty.Particle.ACCELERATION_X_MAX, emitterData.getAccelerationX().getMaxValue());
@@ -154,7 +157,9 @@ public class EmitterMapObjectLoader extends MapObjectLoader {
 
     mo.setValue(MapObjectProperty.COLLISION_TYPE, emitterData.getCollision());
     mo.setValue(MapObjectProperty.REQUIRED_QUALITY, emitterData.getRequiredQuality());
-    String commaSeperatedTexts = ArrayUtilities.join(emitterData.getTexts());
+    String commaSeperatedTexts = Arrays.stream(emitterData.getTexts().toArray())
+      .map(Object::toString)
+      .collect(Collectors.joining(","));
     mo.setValue(MapObjectProperty.Particle.TEXTS, commaSeperatedTexts);
 
     mo.setValue(MapObjectProperty.SPRITESHEETNAME, emitterData.getSpritesheet());

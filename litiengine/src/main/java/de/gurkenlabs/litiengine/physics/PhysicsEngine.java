@@ -5,12 +5,12 @@ import de.gurkenlabs.litiengine.Game;
 import de.gurkenlabs.litiengine.IUpdateable;
 import de.gurkenlabs.litiengine.entities.ICollisionEntity;
 import de.gurkenlabs.litiengine.entities.IMobileEntity;
-import de.gurkenlabs.litiengine.util.ArrayUtilities;
 import de.gurkenlabs.litiengine.util.geom.GeometricUtilities;
 import java.awt.Shape;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -745,7 +745,8 @@ public final class PhysicsEngine implements IUpdateable {
           result =
             new Intersection(
               intersection.createUnion(result),
-              ArrayUtilities.append(result.involvedEntities, otherEntity));
+              Stream.concat(Arrays.stream(result.involvedEntities), Stream.of(otherEntity))
+                .toArray(ICollisionEntity[]::new));
         } else {
           result = new Intersection(intersection, otherEntity);
         }
@@ -896,7 +897,9 @@ public final class PhysicsEngine implements IUpdateable {
         continue;
       }
 
-      involvedEntities = ArrayUtilities.distinct(involvedEntities, inter.involvedEntities);
+      involvedEntities = Stream.concat(Arrays.stream(involvedEntities), Arrays.stream(inter.involvedEntities))
+        .distinct()
+        .toArray(ICollisionEntity[]::new);
     }
 
     // 1. fire collision event on the collider with all the involved entities

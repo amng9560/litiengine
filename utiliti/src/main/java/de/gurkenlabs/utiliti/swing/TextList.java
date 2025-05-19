@@ -1,8 +1,8 @@
 package de.gurkenlabs.utiliti.swing;
 
-import de.gurkenlabs.litiengine.util.ArrayUtilities;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -140,7 +140,9 @@ public class TextList extends JPanel {
 
   public void setJoinedString(String rows) {
     this.model.setRowCount(0);
-    for (int target : ArrayUtilities.splitInt(rows)) {
+    for (int target : Arrays.stream(rows.split(","))
+      .mapToInt(Integer::parseInt)
+      .toArray()) {
       this.model.addRow(new Object[] {target});
     }
   }
