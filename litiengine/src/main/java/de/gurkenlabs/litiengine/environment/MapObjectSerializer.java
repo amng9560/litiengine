@@ -7,6 +7,7 @@ import de.gurkenlabs.litiengine.environment.tilemap.TmxProperty;
 import de.gurkenlabs.litiengine.environment.tilemap.TmxType;
 import de.gurkenlabs.litiengine.environment.tilemap.xml.DecimalFloatAdapter;
 import de.gurkenlabs.litiengine.environment.tilemap.xml.MapObject;
+import de.gurkenlabs.litiengine.util.ArrayUtilities;
 import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
@@ -115,13 +116,9 @@ public final class MapObjectSerializer {
           .reduce((a, b) -> a + "," + b)
           .orElse("");
       } else if (field.getType().getComponentType() == float.class) {
-        return Arrays.stream((float[]) value)
-          .mapToObj(String::valueOf)
-          .collect(Collectors.joining(",", "[", "]"));
+        return ArrayUtilities.join((float[]) value);
       } else if (field.getType().getComponentType() == short.class) {
-        return Arrays.stream((short[]) value)
-          .mapToObj(String::valueOf)
-          .collect(Collectors.joining(","));
+        return ArrayUtilities.join((short[]) value);
       } else if (field.getType().getComponentType() == byte.class) {
         return new String((byte[]) value, StandardCharsets.UTF_8);
       } else if (field.getType().getComponentType() == long.class) {
@@ -133,11 +130,10 @@ public final class MapObjectSerializer {
         return Arrays.stream((String[]) value)
           .collect(Collectors.joining(","));
       } else if (field.getType().getComponentType() == boolean.class) {
-        return Arrays.stream((boolean[]) value)
-          .mapToObj(String::valueOf)
-          .collect(Collectors.joining());
+        return ArrayUtilities.join((boolean[]) value);
       } else {
         return Arrays.stream((Object[]) value)
+          .map(String::valueOf)
           .collect(Collectors.joining(","));
       }
     }
